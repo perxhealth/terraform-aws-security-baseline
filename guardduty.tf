@@ -1,5 +1,5 @@
 resource "aws_guardduty_detector" "primary" {
-  count  = var.guardduty ? 1 : 0
+  count  = var.guardduty && length(var.guardduty_detector_id) == 0 ? 1 : 0
   enable = true
 }
 
