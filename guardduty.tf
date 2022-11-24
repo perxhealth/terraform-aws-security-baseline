@@ -1,4 +1,5 @@
 resource "aws_guardduty_detector" "primary" {
+  count  = var.guardduty ? 1 : 0
   enable = true
 }
 
@@ -12,7 +13,7 @@ resource "aws_guardduty_member" "member" {
   provider = aws.master
 
   account_id                 = aws_guardduty_detector.member[0].account_id
-  detector_id                = try(var.guardduty_detector_id, aws_guardduty_detector.primary.id)
+  detector_id                = try(var.guardduty_detector_id, aws_guardduty_detector.primary[count.index].id)
   email                      = var.account_email
   invite                     = true
   disable_email_notification = true
